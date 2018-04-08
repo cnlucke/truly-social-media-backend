@@ -1,18 +1,22 @@
 class AuthController < ApplicationController
-  skip_before_action :authorized, only: [:create]
-  # SIGN IN
-  # POST /login
-  # { username: "meryl", password: "mangoes"}
-  def create
+  serialization_scope :view_context
 
-    @user = User.find_by(username: params[:username])
+  def create
+    @user = User.find_by(email: params[:email])
     if @user && @user.authenticate(params[:password])
       payload = { user_id: @user.id}
-
-      render json: {user: UserSerializer.new(@user), token: issue_token(payload) }
+      render json: {user: UserSerializer.new(@user), token: issue_token(payload), lists: @user.lists}
     else
-      render json: {message: "SUCKS"}
+      render json: {error: "could not authenticate user"}
     end
-
   end
+
+  def show
+    if current_user
+      render json: current_user
+    else
+      render json: {error: "could not authenticate"}
+    end
+  end
+
 end

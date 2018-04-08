@@ -20,25 +20,28 @@ ActiveRecord::Schema.define(version: 20180404153713) do
     t.integer "friend_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
+    t.index ["user_id"], name: "index_friendships_on_user_id"
   end
 
-  create_table "lists", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "media_id"
-    t.string "list_type"
+  create_table "items", force: :cascade do |t|
+    t.string "api_id"
+    t.string "title"
+    t.string "date"
+    t.string "poster_url"
+    t.string "backdrop_url"
+    t.text "overview"
+    t.string "item_type"
+    t.string "genres"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "media", force: :cascade do |t|
-    t.string "api_id"
-    t.string "title"
-    t.string "release_date"
-    t.string "poster_url"
-    t.string "backdrop_url"
-    t.text "overview"
-    t.string "media_type"
-    t.string "genres"
+  create_table "lists", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "item_id"
+    t.string "list_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

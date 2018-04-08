@@ -1,21 +1,27 @@
 class UsersController < ApplicationController
-  skip_before_action :authorized, only: [:create]
-  # POST /users
-  #
-  # { username: "beef", password: "steak"}
+  serialization_scope :view_context
+
   def create
-    @user = User.new(username: params[:username], password: params[:password])
+    @user = User.new(user_params)
     if @user.save
       # SUCCESSFUL CREATION
       payload = { user_id: @user.id}
       render json: {user: UserSerializer.new(@user), token: issue_token(payload)}
     else
-      render json: {message: "Sucks to suck"}
+      render json: {error: @user.errors.full_messages}
     end
   end
 
   def profile
-    render json: current_user
+    # payload = { user_id: current_user.id }
+    # render json: {user: UserSerializer.new(current_user), token: issue_token(payload)}
+    render json: { user: UserSerializer.new(current_user), lists: current_user.lists }
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:email, :password, :first_name, :last_name, :city, :state)
   end
 
 end
