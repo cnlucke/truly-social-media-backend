@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :inverse_friends, through: :inverse_friendships, source: :user
   has_many :lists
   has_many :items, through: :lists
+  has_many :comments
   accepts_nested_attributes_for :lists, allow_destroy: true
   has_secure_password
 
