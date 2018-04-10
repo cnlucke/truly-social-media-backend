@@ -32,8 +32,9 @@ ActiveRecord::Schema.define(version: 20180404153713) do
     t.string "poster_url"
     t.string "backdrop_url"
     t.text "overview"
-    t.string "item_type"
+    t.string "media_type"
     t.string "genres"
+    t.integer "rating", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

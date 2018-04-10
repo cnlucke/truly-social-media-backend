@@ -7,9 +7,9 @@ class CreateItem < ActiveRecord::Migration[5.1]
       t.string :poster_url
       t.string :backdrop_url
       t.text :overview
-      t.string :item_type
+      t.string :media_type
       t.string :genres
-
+      t.integer :rating, default: 0
       t.timestamps
     end
   end

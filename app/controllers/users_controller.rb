@@ -13,9 +13,12 @@ class UsersController < ApplicationController
   end
 
   def profile
-    # payload = { user_id: current_user.id }
-    # render json: {user: UserSerializer.new(current_user), token: issue_token(payload)}
-    render json: { user: UserSerializer.new(current_user), lists: current_user.lists }
+    # Get NEXT list for user:
+    next_list = current_user.get_list_by_type("next")
+    watching_list = current_user.get_list_by_type("watching")
+    seen_list = current_user.get_list_by_type("seen")
+
+    render json: { user: UserSerializer.new(current_user), next: next_list, watching: watching_list, seen: seen_list }
   end
 
   private
