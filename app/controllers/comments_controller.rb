@@ -11,7 +11,6 @@ class CommentsController < ApplicationController
      if @comment.save
       render json: { comment: @comment, user: @comment.user }
     else
-      binding.pry
       render json: {error: 'could not add comment to db'}
     end
   end

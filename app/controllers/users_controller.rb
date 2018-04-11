@@ -4,7 +4,6 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      # SUCCESSFUL CREATION
       payload = { user_id: @user.id}
       render json: {user: UserSerializer.new(@user), token: issue_token(payload)}
     else
@@ -13,7 +12,6 @@ class UsersController < ApplicationController
   end
 
   def profile
-    # Get NEXT list for user:
     next_list = current_user.get_list_by_type("next")
     watching_list = current_user.get_list_by_type("watching")
     seen_list = current_user.get_list_by_type("seen")
