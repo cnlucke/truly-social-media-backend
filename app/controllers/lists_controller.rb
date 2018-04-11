@@ -7,7 +7,6 @@ class ListsController < ApplicationController
     @item = Item.find_by(api_id: list_params[:items_attributes][:api_id])
     if !@item
       @item = Item.create(list_params[:items_attributes])
-      binding.pry
     end
 
     if @item
