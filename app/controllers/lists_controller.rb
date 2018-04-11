@@ -4,7 +4,12 @@ class ListsController < ApplicationController
   end
 
   def create
-    @item = Item.find_or_create_by(list_params[:items_attributes])
+    @item = Item.find_by(api_id: list_params[:items_attributes][:api_id])
+    if !@item
+      @item = Item.create(list_params[:items_attributes])
+      binding.pry
+    end
+
     if @item
       if current_user.get_list_by_type(list_params[:list_type]).include?(@item)
         render json: { list_type: list_params[:list_type], item: @item }
