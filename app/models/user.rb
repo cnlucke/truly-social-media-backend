@@ -12,9 +12,9 @@ class User < ApplicationRecord
   def get_list_by_type(type)
     # Get list instances associated with user with correct list type
     list = self.lists.where(list_type: type)
+    # Sort list by position, created_at
+    sorted_list = list.sort_by {|item| [item.position, item.created_at] }
     # Map list instances to item objects
-    items = list.map { |list| Item.find(list.item_id)}
-    # Sort list by created_at date
-    items.sort_by {|item| item.created_at}.reverse
+    sorted_list.map { |list| Item.find(list.item_id)}
   end
 end
