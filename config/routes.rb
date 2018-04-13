@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   post "/comments", to: "comments#create"
   get "/comments", to: "comments#index"
   get "/friends", to: "friendships#friends"
+  post "/friends", to: "friendships#create"
+  post "/remove_friend", to: "friendships#destroy"
 end

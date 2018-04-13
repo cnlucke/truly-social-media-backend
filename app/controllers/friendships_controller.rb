@@ -1,8 +1,8 @@
 class FriendshipsController < ApplicationController
   def create
-    @friendship = current_user.friendships.build(:friend_id => params[:friend_id])
+    @friendship = current_user.friendships.build(friend_id: friend_params[:id])
     if @friendship.save
-      render json: @friendship
+      render json: @friendship.friend
     else
       render json: { error: 'could not create friendship'}
     end
@@ -13,8 +13,17 @@ class FriendshipsController < ApplicationController
   end
 
   def destroy
-    @friendship = current_user.friendships.find(params[:id])
-    @friendship.destroy
-    render json: @friendship
+    @friendship = current_user.friendships.find_by(friend_id: friend_params[:id])
+    if @friendship.destroy
+      render json: @friendship.friend
+    else
+      render json: {error: 'unable to add friendship'}
+    end
+  end
+
+  private
+
+  def friend_params
+    params.require(:user).permit(:id, :email, :password, :first_name, :last_name, :city, :state)
   end
 end
