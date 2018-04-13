@@ -9,15 +9,19 @@ class FriendshipsController < ApplicationController
   end
 
   def friends
-    render json: current_user.friends
+    # This currently gives back everyone you've friended and everyone who has friended you
+    render json: current_user.all_friends
   end
 
   def destroy
-    @friendship = current_user.friendships.find_by(friend_id: friend_params[:id])
-    if @friendship.destroy
-      render json: @friendship.friend
+    # Need to look for friendships that go either direction
+    @friendship = current_user.find_friendship_by_friend_id(friend_params[:id])
+    if !@friendship.empty?
+      @friend = User.find_by(id: friend_params[:id])
+      @friendship.each { |f| f.destroy }
+      render json: @friend
     else
-      render json: {error: 'unable to add friendship'}
+      render json: {error: 'unable to destroy friendship'}
     end
   end
 

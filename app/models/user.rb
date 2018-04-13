@@ -17,4 +17,27 @@ class User < ApplicationRecord
     # Map list instances to item objects
     sorted_list.map { |list| Item.find(list.item_id)}
   end
+
+  def all_friends
+    (self.friends + self.inverse_friends).uniq
+  end
+
+  def all_friendships
+    self.friendships + self.inverse_friendships
+  end
+
+  def find_friendship_by_friend_id(id)
+    all_friendships.select { |f| f.friend_id === id || f.user_id === id }
+  end
+
+  def all_comments
+    # get friends' comments
+    friend_comments = self.all_friends.map { |f| f.comments }.flatten
+    # get comments of each friend's friends
+    distant_friend_comments = self.all_friends.map do |f|
+      f.all_friends.map { |f| f.comments }.flatten
+    end
+
+    self.comments + friend_comments + distant_friend_comments.flatten
+  end
 end

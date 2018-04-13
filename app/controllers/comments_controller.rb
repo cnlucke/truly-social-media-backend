@@ -1,8 +1,6 @@
 class CommentsController < ApplicationController
   def index
-    @comments = Comment.all
-    #This will be updated to return all user comments and user's friends' comments
-    render json: @comments
+    render json: current_user.all_comments
   end
 
   def create
