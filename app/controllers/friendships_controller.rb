@@ -8,6 +8,10 @@ class FriendshipsController < ApplicationController
     end
   end
 
+  def friends
+    render json: current_user.friends
+  end
+
   def destroy
     @friendship = current_user.friendships.find(params[:id])
     @friendship.destroy

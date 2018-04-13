@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
   serialization_scope :view_context
 
+  def index
+    @users = User.all
+    render json: @users
+  end
+
   def create
     @user = User.new(user_params)
     if @user.save
@@ -16,7 +21,12 @@ class UsersController < ApplicationController
     watching_list = current_user.get_list_by_type("watching")
     seen_list = current_user.get_list_by_type("seen")
 
-    render json: { user: UserSerializer.new(current_user), next: next_list, watching: watching_list, seen: seen_list }
+    render json: {  user: UserSerializer.new(current_user),
+                    friends: current_user.friends,
+                    all_users: User.all,
+                    next: next_list,
+                    watching: watching_list,
+                    seen: seen_list }
   end
 
   private
