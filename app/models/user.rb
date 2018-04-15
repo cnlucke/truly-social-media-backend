@@ -31,13 +31,15 @@ class User < ApplicationRecord
   end
 
   def all_comments
-    # get friends' comments
-    friend_comments = self.all_friends.map { |f| f.comments }.flatten
     # get comments of each friend's friends
     distant_friend_comments = self.all_friends.map do |f|
-      f.all_friends.map { |f| f.comments }.flatten
+      f.friend_comments
     end
 
-    self.comments + friend_comments + distant_friend_comments.flatten
+    (self.comments + self.friend_comments + distant_friend_comments.flatten).uniq
+  end
+
+  def friend_comments
+    self.all_friends.map { |f| f.comments }.flatten
   end
 end

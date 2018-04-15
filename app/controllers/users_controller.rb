@@ -16,6 +16,14 @@ class UsersController < ApplicationController
     end
   end
 
+  def update
+    if current_user.update(user_params)
+      render json: current_user
+    else
+      render json: {error: 'unable to update user profile' }
+    end
+  end
+
   def profile
     next_list = current_user.get_list_by_type("next")
     watching_list = current_user.get_list_by_type("watching")
@@ -29,10 +37,23 @@ class UsersController < ApplicationController
                     seen: seen_list }
   end
 
+  def friend_profile
+    # currently not limiting it to only current_user's friends
+    @friend = User.find_by(id: params[:id])
+    next_list = @friend.get_list_by_type("next")
+    watching_list = @friend.get_list_by_type("watching")
+    seen_list = @friend.get_list_by_type("seen")
+
+    render json: {  user: UserSerializer.new(@friend),
+                    next: next_list,
+                    watching: watching_list,
+                    seen: seen_list }
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :first_name, :last_name, :city, :state)
+    params.require(:user).permit(:id, :email, :password, :first_name, :last_name, :city, :state)
   end
 
 end

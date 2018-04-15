@@ -41,7 +41,7 @@ class ListsController < ApplicationController
     # render JSON entire list
     render json: converted_items
   end
-
+  
   def destroy
     list = List.find_by(user_id: current_user.id, item_id: list_params[:item_id], list_type: list_params[:list_type])
     if list.destroy
