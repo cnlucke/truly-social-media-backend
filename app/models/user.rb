@@ -43,4 +43,9 @@ class User < ApplicationRecord
   def friend_comments
     self.all_friends.map { |f| f.comments }.flatten
   end
+
+  def friend_ratings
+    self.all_friends.map { |f| f.ratings }.flatten
+  end
+
 end

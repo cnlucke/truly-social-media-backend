@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   patch "/profile", to: "users#update"
   get "/profile", to: "users#profile"
   get "/profile/:id", to: "users#friend_profile"
-  get "/users", to: "users#index"
   post "/add_list_item", to: "lists#create"
   post "/remove_list_item", to: "lists#destroy"
   patch "/order", to: "lists#order"

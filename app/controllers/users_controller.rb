@@ -1,11 +1,6 @@
 class UsersController < ApplicationController
   serialization_scope :view_context
 
-  def index
-    @users = User.all
-    render json: @users
-  end
-
   def create
     @user = User.new(user_params)
     if @user.save
@@ -25,18 +20,24 @@ class UsersController < ApplicationController
   end
 
   def profile
+    all_users = User.select { |u| u.id != current_user.id }
     next_list = current_user.get_list_by_type("next")
     watching_list = current_user.get_list_by_type("watching")
     seen_list = current_user.get_list_by_type("seen")
-    ratings = Rating.where(user_id: current_user.id)
+    friend_recommended_ratings = current_user.friend_ratings.select { |r| r.rating >= 9 }
+    # currently does not persist who recommends it
+    recommended_items = friend_recommended_ratings.map { |r| Item.find(r.item_id)}
+    sorted_recommended_items = (recommended_items.sort_by &:rating).reverse
 
     render json: {  user: UserSerializer.new(current_user),
-                    friends: current_user.friends,
-                    all_users: User.all,
+                    friends: current_user.all_friends,
+                    all_users: all_users,
                     next: next_list,
                     watching: watching_list,
                     seen: seen_list,
-                    ratings: ratings, each_serializer: RatingSerializer }
+                    ratings: current_user.ratings, each_serializer: RatingSerializer,
+                    friend_ratings: current_user.friend_ratings,
+                    recommended: sorted_recommended_items }
   end
 
   def friend_profile
