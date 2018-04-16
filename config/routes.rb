@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   post "/add_list_item", to: "lists#create"
   post "/remove_list_item", to: "lists#destroy"
   patch "/order", to: "lists#order"
-  patch "/rate_item", to: "items#update"
+  patch "/rate_item", to: "items#rate"
   post "/comments", to: "comments#create"
   get "/comments", to: "comments#index"
   get "/friends", to: "friendships#friends"

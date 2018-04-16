@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :lists
   has_many :items, through: :lists
   has_many :comments
+  has_many :ratings
   accepts_nested_attributes_for :lists, allow_destroy: true
   has_secure_password
 

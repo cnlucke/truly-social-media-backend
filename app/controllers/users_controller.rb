@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       payload = { user_id: @user.id}
       render json: {user: UserSerializer.new(@user), token: issue_token(payload)}
     else
-      render json: {error: @user.errors.full_messages}
+      render json: { error: @user.errors }
     end
   end
 
@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     if current_user.update(user_params)
       render json: current_user
     else
-      render json: {error: 'unable to update user profile' }
+      render status: 400
     end
   end
 
@@ -28,26 +28,30 @@ class UsersController < ApplicationController
     next_list = current_user.get_list_by_type("next")
     watching_list = current_user.get_list_by_type("watching")
     seen_list = current_user.get_list_by_type("seen")
+    ratings = Rating.where(user_id: current_user.id)
 
     render json: {  user: UserSerializer.new(current_user),
                     friends: current_user.friends,
                     all_users: User.all,
                     next: next_list,
                     watching: watching_list,
-                    seen: seen_list }
+                    seen: seen_list,
+                    ratings: ratings, each_serializer: RatingSerializer }
   end
 
   def friend_profile
     # currently not limiting it to only current_user's friends
-    @friend = User.find_by(id: params[:id])
-    next_list = @friend.get_list_by_type("next")
-    watching_list = @friend.get_list_by_type("watching")
-    seen_list = @friend.get_list_by_type("seen")
+    friend = User.find_by(id: params[:id])
+    next_list = friend.get_list_by_type("next")
+    watching_list = friend.get_list_by_type("watching")
+    seen_list = friend.get_list_by_type("seen")
+    ratings = Rating.where(user_id: friend.id)
 
-    render json: {  user: UserSerializer.new(@friend),
+    render json: {  user: UserSerializer.new(friend),
                     next: next_list,
                     watching: watching_list,
-                    seen: seen_list }
+                    seen: seen_list,
+                    ratings: ratings, each_serializer: RatingSerializer }
   end
 
   private
