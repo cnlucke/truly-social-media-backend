@@ -28,16 +28,21 @@ class UsersController < ApplicationController
     # currently does not persist who recommends it
     recommended_items = friend_recommended_ratings.map { |r| Item.find(r.item_id)}
     sorted_recommended_items = (recommended_items.sort_by &:rating).reverse
+    friend_ratings = current_user.friend_ratings
+    ratings = current_user.ratings
 
-    render json: {  user: UserSerializer.new(current_user),
-                    friends: current_user.all_friends,
-                    all_users: all_users,
-                    next: next_list,
-                    watching: watching_list,
-                    seen: seen_list,
-                    ratings: current_user.ratings, each_serializer: RatingSerializer,
-                    friend_ratings: current_user.friend_ratings,
-                    recommended: sorted_recommended_items }
+    render json: {
+                    user: UserSerializer.new(current_user),
+                    rating: RatingSerializer.new(ratings[0]),
+                    friends: current_user.all_friends.map { |r| UserSerializer.new(r)},
+                    all_users: all_users.map { |r| UserSerializer.new(r)},
+                    next: next_list.map { |r| ItemSerializer.new(r)},
+                    watching: watching_list.map { |r| ItemSerializer.new(r)},
+                    seen: seen_list.map { |r| ItemSerializer.new(r)},
+                    ratings: ratings.map { |r| RatingSerializer.new(r)},
+                    friend_ratings: friend_ratings, each_serializer: RatingSerializer,
+                    recommended: sorted_recommended_items.map { |r| ItemSerializer.new(r)}
+                   }
   end
 
   def friend_profile
@@ -48,11 +53,13 @@ class UsersController < ApplicationController
     seen_list = friend.get_list_by_type("seen")
     ratings = Rating.where(user_id: friend.id)
 
-    render json: {  user: UserSerializer.new(friend),
-                    next: next_list,
-                    watching: watching_list,
-                    seen: seen_list,
-                    ratings: ratings, each_serializer: RatingSerializer }
+    render json: {
+                    user: UserSerializer.new(friend),
+                    next: next_list.map { |r| ItemSerializer.new(r)},
+                    watching: watching_list.map { |r| ItemSerializer.new(r)},
+                    seen: seen_list.map { |r| ItemSerializer.new(r)},
+                    ratings: ratings.map { |r| RatingSerializer.new(r)}
+                  }
   end
 
   private

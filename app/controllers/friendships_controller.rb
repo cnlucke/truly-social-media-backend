@@ -10,7 +10,7 @@ class FriendshipsController < ApplicationController
 
   def friends
     # This currently gives back everyone you've friended and everyone who has friended you
-    render json: current_user.all_friends
+    render json: current_user.all_friends.map { |f| UserSerializer.new(f)  }
   end
 
   def destroy

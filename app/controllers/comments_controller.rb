@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   def index
-    render json: current_user.all_comments
+    render json: current_user.all_comments.map { |c| CommentSerializer.new(c)  }
   end
 
   def create
