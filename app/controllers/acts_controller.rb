@@ -1,14 +1,15 @@
 class ActsController < ApplicationController
   def feed
-    @acts_with_bodies = @acts.map { |act|
-      if act.entity
-        act.body = act.entity.format_act(act.act_type)
-      else
-        act.body = "Entity does not exist for: #{act}"
-      end
+    hash_with_bodies = Act.all.to_a.map do |act|
+      act_as_hash = act.serializable_hash
+      if act.entity
+        act_as_hash["body"] = act.entity.format_act(act)
+      else
+        act_as_hash["body"] = "Entity does not exist for: #{act}"
+      end
+      act_as_hash
+    end
 
-      act
-    }
-    render json: @acts_with_bodies
+    render json: hash_with_bodies
   end
 end

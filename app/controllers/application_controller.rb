@@ -25,4 +25,11 @@ class ApplicationController < ActionController::API
     render json: { error: "User not authorized" } unless logged_in?
   end
 
+  def notify(act, entity)
+    act = Act.create(
+      actor:    current_user,
+      entity:   entity,
+      act_type: act
+    )
+  end
 end

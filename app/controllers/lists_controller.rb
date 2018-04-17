@@ -4,20 +4,21 @@ class ListsController < ApplicationController
   end
 
   def create
-    @item = Item.find_by(api_id: list_params[:items_attributes][:api_id])
-    if !@item
-      @item = Item.create(list_params[:items_attributes])
+    item = Item.find_by(api_id: list_params[:items_attributes][:api_id])
+    if !item
+      item = Item.create(list_params[:items_attributes])
     end
 
-    if @item
-      if current_user.get_list_by_type(list_params[:list_type]).include?(@item)
-        render json: { list_type: list_params[:list_type], item: @item }
+    if item
+      if current_user.get_list_by_type(list_params[:list_type]).include?(item)
+        render json: { list_type: list_params[:list_type], item: item }
       else
-        # current_user.get_list_by_type(list_params[:list_type]) << @item
-        @list = List.find_or_create_by(user_id: current_user.id, item_id: @item.id, list_type: list_params[:list_type])
+        # current_user.get_list_by_type(list_params[:list_type]) << item
+        list = List.find_or_create_by(user_id: current_user.id, item_id: item.id, list_type: list_params[:list_type])
         # Creates list item with no list_type populated
-        if @list
-          render json: { list_type: @list.list_type, item: @item }
+        if list
+          notify Act::ACT_ITEM_ADDED_TO_LIST, list
+          render json: { list_type: list.list_type, item: item }
         else
           render json: {error: 'could not create list'}
         end
@@ -41,7 +42,7 @@ class ListsController < ApplicationController
     # render JSON entire list
     render json: converted_items
   end
-  
+
   def destroy
     list = List.find_by(user_id: current_user.id, item_id: list_params[:item_id], list_type: list_params[:list_type])
     if list.destroy

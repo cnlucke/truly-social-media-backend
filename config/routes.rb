@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   get "/friends", to: "friendships#friends"
   post "/friends", to: "friendships#create"
   post "/remove_friend", to: "friendships#destroy"
+  get "/feed", to: "acts#feed"
 end

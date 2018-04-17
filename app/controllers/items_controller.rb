@@ -3,6 +3,7 @@ class ItemsController < ApplicationController
     item = current_user.items.find(item_params[:id])
     rating = Rating.find_by(user_id: current_user.id, item_id: item.id)
     if rating
+      notify Act::ACT_ITEM_RATED, rating
       rating.update(rating: item_params[:rating])
     else
       rating = Rating.create(user_id: current_user.id, item_id: item.id, rating: item_params[:rating])

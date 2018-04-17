@@ -38,7 +38,7 @@ class Comment
   def format_act(act)
     case act.act_type
     when Act::ACT_COMMENT_CREATED
-      "#{actor.name} dropped a comment on #{comment.movie.name}"
+      "#{act.actor.name} dropped a comment on #{comment.movie.name}"
     else
       "Unknown act: #{act.act_type}"
     end
@@ -68,4 +68,26 @@ end
 class Act < ApplicationRecord
   belongs_to :actor, class_name: "User", foreign_key: "actor_id"
   belongs_to :entity, polymorphic: true
+end
+
+
+# simple method called notify in the ApplicationController that would be called right after each loggable thing happened
+def notify(act, entity, options={})
+  act = Act.create(
+      actor:          current_user,
+      entity:         entity,
+      act_type:  act
+    )
+ end
+
+def create
+    @building = Building.new(sanitized_params)
+    @building.site = current_site
+    if @building.save
+      notify Notification::ACTIVITY_NEW_BUILDING, @building
+    else
+      flash.now[:alert] = "Please fix the errors below."
+      render :new
+    end
+  end
 end
