@@ -2,6 +2,8 @@ class Friendship < ApplicationRecord
   belongs_to :user
   belongs_to :friend, class_name: "User"
 
+  # after_save :create_act
+
   def format_act(act)
     case act.act_type
     when Act::ACT_FRIENDSHIP_CREATED
@@ -10,4 +12,15 @@ class Friendship < ApplicationRecord
       "Unknown act: #{act.act_type}"
     end
   end
+
+  # def create_act
+  #   binding.pry
+  #   Act.new
+  #   Act.actor = self.user
+  #   Act.act_type = Act::ACT_FRIENDSHIP_CREATED
+  #   Act.entity_id = self.id
+  #   Act.entity_type = self.class.name
+  #   Act.save
+  # end
+
 end

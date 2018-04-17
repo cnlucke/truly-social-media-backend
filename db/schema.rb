@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20180417133744) do
 
   create_table "acts", force: :cascade do |t|
     t.integer "actor_id"
-    t.integer "activity_type"
+    t.integer "act_type"
     t.integer "entity_id"
     t.string "entity_type"
     t.datetime "created_at", null: false
