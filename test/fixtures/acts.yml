@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  actor_id: 1
+  activity_type: 1
+  entitiy_id: 1
+  entity_type: MyString
+
+two:
+  actor_id: 1
+  activity_type: 1
+  entitiy_id: 1
+  entity_type: MyString

@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_many :items, through: :lists
   has_many :comments
   has_many :ratings
+  has_many :acts, foreign_key: "actor_id"
+  has_many :friend_acts, through: :friends, source: :acts
   accepts_nested_attributes_for :lists, allow_destroy: true
   has_secure_password
 
