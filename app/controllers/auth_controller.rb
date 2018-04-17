@@ -3,6 +3,7 @@ class AuthController < ApplicationController
 
   def create
     user = User.find_by(email: params[:email])
+
     if user && user.authenticate(params[:password])
       payload = { user_id: user.id}
       next_list = user.get_list_by_type("next")
@@ -25,19 +26,11 @@ class AuthController < ApplicationController
                       seen: seen_list.map { |r| ItemSerializer.new(r)},
                       ratings: ratings.map { |r| RatingSerializer.new(r)},
                       friend_ratings: friend_ratings, each_serializer: RatingSerializer,
-                      recommended: sorted_recommended_items.map { |r| ItemSerializer.new(r)}
+                      recommended: sorted_recommended_items.map { |r| ItemSerializer.new(r)},
+                      token: issue_token(payload)
                      }
     else
       render json: {error: "could not authenticate user"}
     end
   end
-
-  def show
-    if current_user
-      render json: current_user
-    else
-      render json: {error: "could not authenticate"}
-    end
-  end
-
 end
