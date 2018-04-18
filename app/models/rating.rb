@@ -1,7 +1,7 @@
 class Rating < ApplicationRecord
   belongs_to :user
   belongs_to :item
-
+  has_many :acts, as: :entity, dependent: :destroy
   after_save :update_item_rating
 
   def update_item_rating

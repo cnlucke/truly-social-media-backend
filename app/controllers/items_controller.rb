@@ -7,6 +7,7 @@ class ItemsController < ApplicationController
       rating.update(rating: item_params[:rating])
     else
       rating = Rating.create(user_id: current_user.id, item_id: item.id, rating: item_params[:rating])
+      notify Act::ACT_ITEM_RATED, rating
     end
     # need to return updated item and new rating record
     render json: { item: item, rating: RatingSerializer.new(rating) }

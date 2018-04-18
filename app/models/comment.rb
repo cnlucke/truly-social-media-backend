@@ -1,6 +1,7 @@
 class Comment < ApplicationRecord
   belongs_to :user
   belongs_to :item
+  has_many :acts, as: :entity, dependent: :destroy
 
   def format_act(act)
     case act.act_type
