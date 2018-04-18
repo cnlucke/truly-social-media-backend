@@ -15,7 +15,7 @@ class User < ApplicationRecord
   def full_name
     self.first_name + ' ' + self.last_name
   end
-  
+
   def get_list_by_type(type)
     # Get list instances associated with user with correct list type
     list = self.lists.where(list_type: type)

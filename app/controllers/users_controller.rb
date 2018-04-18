@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     seen_list = current_user.get_list_by_type("seen")
     friend_recommended_ratings = current_user.friend_ratings.select { |r| r.rating >= 9 }
     # currently does not persist who recommends it
-    recommended_items = friend_recommended_ratings.map { |r| Item.find(r.item_id)}
+    recommended_items = friend_recommended_ratings.map { |r| Item.find(r.item_id)}.uniq
     sorted_recommended_items = (recommended_items.sort_by &:rating).reverse
     friend_ratings = current_user.friend_ratings
     ratings = current_user.ratings

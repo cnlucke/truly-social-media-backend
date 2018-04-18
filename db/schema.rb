@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180417133744) do
+ActiveRecord::Schema.define(version: 20180418203413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20180417133744) do
     t.text "overview"
     t.string "media_type"
     t.string "genres"
-    t.decimal "rating", default: "0.0"
+    t.float "rating", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
