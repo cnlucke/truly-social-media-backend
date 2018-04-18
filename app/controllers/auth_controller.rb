@@ -3,7 +3,6 @@ class AuthController < ApplicationController
 
   def create
     user = User.find_by(email: params[:email])
-
     if user && user.authenticate(params[:password])
       payload = { user_id: user.id}
       next_list = user.get_list_by_type("next")
@@ -17,8 +16,9 @@ class AuthController < ApplicationController
       recommended_items = friend_recommended_ratings.map { |r| Item.find(r.item_id)}
       sorted_recommended_items = (recommended_items.sort_by &:rating).reverse
 
-      render json: {  user: UserSerializer.new(user),
-                      rating: RatingSerializer.new(ratings[0]),
+      binding.pry
+      render json: {
+                      user: UserSerializer.new(user),
                       friends: user.all_friends.map { |r| UserSerializer.new(r)},
                       all_users: all_users.map { |r| UserSerializer.new(r)},
                       next: next_list.map { |r| ItemSerializer.new(r)},
@@ -28,7 +28,7 @@ class AuthController < ApplicationController
                       friend_ratings: friend_ratings, each_serializer: RatingSerializer,
                       recommended: sorted_recommended_items.map { |r| ItemSerializer.new(r)},
                       token: issue_token(payload)
-                     }
+                    }
     else
       render json: {error: "could not authenticate user"}
     end
