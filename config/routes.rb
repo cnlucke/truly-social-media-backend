@@ -14,4 +14,6 @@ Rails.application.routes.draw do
   post "/friends", to: "friendships#create"
   post "/remove_friend", to: "friendships#destroy"
   get "/feed", to: "acts#feed"
+
+  mount ActionCable.server => '/cable'
 end

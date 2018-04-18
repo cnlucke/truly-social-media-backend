@@ -57,6 +57,6 @@ class ListsController < ApplicationController
   # params.require(:person).permit(:name, :age, pets_attributes: [:id, :name, :category])
 
   def list_params
-    params.require(:list).permit(:list_type, :item_id, items_attributes: [:id, :api_id, :title, :date, :poster_url, :backdrop_url, :overview, :genres, :media_type, :position])
+    params.require(:list).permit(:list_type, :item_id, items_attributes: [:api_id, :title, :date, :poster_url, :backdrop_url, :overview, :genres, :media_type, :position])
   end
 end
