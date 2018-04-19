@@ -33,7 +33,6 @@ class UsersController < ApplicationController
 
     render json: {
                     user: UserSerializer.new(current_user),
-                    rating: RatingSerializer.new(ratings[0]),
                     friends: current_user.all_friends.map { |r| UserSerializer.new(r)},
                     all_users: all_users.map { |r| UserSerializer.new(r)},
                     next: next_list.map { |r| ItemSerializer.new(r)},

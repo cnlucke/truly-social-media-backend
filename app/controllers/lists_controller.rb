@@ -18,6 +18,12 @@ class ListsController < ApplicationController
         # Creates list item with no list_type populated
         if list
           notify Act::ACT_ITEM_ADDED_TO_LIST, list
+
+          ActivityFeedChannel.broadcast_to(Act.order('id').first, {
+            type: 'SET_ACTIVITY',
+            payload: Act.hash_with_bodies
+            })
+
           render json: { list_type: list.list_type, item: item }
         else
           render json: {error: 'could not create list'}

@@ -15,6 +15,11 @@ class CommentsController < ApplicationController
         payload: prepare_comment(comment)
         })
 
+      ActivityFeedChannel.broadcast_to(Act.order('id').first, {
+        type: 'SET_ACTIVITY',
+        payload: Act.hash_with_bodies
+        })
+
         render json: { msg: "success" }
       else
         render json: {error: 'could not add comment to db'}

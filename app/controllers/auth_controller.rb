@@ -16,7 +16,6 @@ class AuthController < ApplicationController
       recommended_items = friend_recommended_ratings.map { |r| Item.find(r.item_id)}
       sorted_recommended_items = (recommended_items.sort_by &:rating).reverse
 
-      binding.pry
       render json: {
                       user: UserSerializer.new(user),
                       friends: user.all_friends.map { |r| UserSerializer.new(r)},

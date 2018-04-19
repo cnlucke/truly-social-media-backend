@@ -1,6 +1,6 @@
 class ActivityFeedChannel < ApplicationCable::Channel
   def subscribed
-    act = Act.last
+    act = Act.order('id').first
     stream_for act
   end
 

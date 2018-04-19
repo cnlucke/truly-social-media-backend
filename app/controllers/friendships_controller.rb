@@ -8,6 +8,12 @@ class FriendshipsController < ApplicationController
 
       if friendship.save
         notify Act::ACT_FRIENDSHIP_CREATED, friendship
+
+        ActivityFeedChannel.broadcast_to(Act.order('id').first, {
+          type: 'SET_ACTIVITY',
+          payload: Act.hash_with_bodies
+          })
+
         render json: friendship.friend
       else
         render json: { error: 'could not create friendship'}
