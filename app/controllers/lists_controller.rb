@@ -8,7 +8,6 @@ class ListsController < ApplicationController
     if !item
       item = Item.create(list_params[:items_attributes])
     end
-
     if item
       if current_user.get_list_by_type(list_params[:list_type]).include?(item)
         render json: { list_type: list_params[:list_type], item: item }
@@ -51,6 +50,7 @@ class ListsController < ApplicationController
 
   def destroy
     list = List.find_by(user_id: current_user.id, item_id: list_params[:item_id], list_type: list_params[:list_type])
+
     if list.destroy
       render json: { list_type: list.list_type, item: Item.find(list.item_id) }
     else
