@@ -55,7 +55,7 @@ class User < ApplicationRecord
   end
 
   def relevant_acts
-    acts = all_friends.map { |f| f.acts }
+    acts = all_friends.map { |f| f.acts }.flatten
     acts << self.acts
     (acts.flatten.sort_by &:created_at).reverse
   end
