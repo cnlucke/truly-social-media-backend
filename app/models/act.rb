@@ -17,4 +17,15 @@ class Act < ApplicationRecord
       act_as_hash
     end
   end
+
+  def as_hash_with_body
+      act_as_hash = self.serializable_hash
+      if self.entity
+        act_as_hash["body"] = self.entity.format_act(self)
+      else
+        act_as_hash["body"] = "Entity does not exist for: #{self}"
+      end
+      act_as_hash
+  end
+
 end

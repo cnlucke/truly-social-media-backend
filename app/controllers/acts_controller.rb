@@ -1,5 +1,6 @@
 class ActsController < ApplicationController
   def feed
-    render json: Act.hash_with_bodies
+    acts = current_user.relevant_acts.map { |a| a.as_hash_with_body }
+    render json: acts
   end
 end
