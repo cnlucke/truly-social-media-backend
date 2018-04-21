@@ -1,4 +1,4 @@
-class CreateItem < ActiveRecord::Migration[5.1]
+class CreateItems < ActiveRecord::Migration[5.1]
   def change
     create_table :items do |t|
       t.string :api_id
@@ -9,7 +9,7 @@ class CreateItem < ActiveRecord::Migration[5.1]
       t.text :overview
       t.string :media_type
       t.string :genres
-      t.integer :rating, default: 0
+      t.float :rating, default: 0.0
       t.timestamps
     end
   end
