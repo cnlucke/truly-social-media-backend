@@ -11,7 +11,7 @@ class FriendshipsController < ApplicationController
 
         ActivityFeedChannel.broadcast_to(Act.order('id').first, {
           type: 'SET_ACTIVITY',
-          payload: Act.hash_with_bodies
+          payload: current_user.relevant_acts
           })
 
         render json: friendship.friend
@@ -32,6 +32,12 @@ class FriendshipsController < ApplicationController
     if !friendship.empty?
       friend = User.find_by(id: friend_params[:id])
       friendship.each { |f| f.destroy }
+
+      ActivityFeedChannel.broadcast_to(Act.order('id').first, {
+        type: 'SET_ACTIVITY',
+        payload: current_user.relevant_acts
+        })
+
       render json: friend
     else
       render json: {error: 'unable to destroy friendship'}
