@@ -42,7 +42,7 @@ class CommentsController < ApplicationController
   			id: comment.id,
   			item_id: comment.item_id,
   			content: comment.content,
-        timestamp: comment.timestamp,
+        timestamp: comment.created_at,
         username: comment.user.full_name,
         user_id: comment.user.id
   		}
@@ -51,6 +51,6 @@ class CommentsController < ApplicationController
     private
 
     def comment_params
-      params.require(:comment).permit(:id, :user_id, :item_id, :parent_id, :content, :timestamp, :api_id, :username)
+      params.require(:comment).permit(:id, :user_id, :item_id, :parent_id, :content, :api_id, :username)
     end
   end
