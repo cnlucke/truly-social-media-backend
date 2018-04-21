@@ -36,7 +36,6 @@ class CommentsController < ApplicationController
       #code
     end
 
-    # comment attributes :id, :user_id, :item_id, :parent_id, :content, :timestamp, :api_id, :username
     def prepare_comment(comment)
   		comment_hash = {
   			id: comment.id,
@@ -51,6 +50,6 @@ class CommentsController < ApplicationController
     private
 
     def comment_params
-      params.require(:comment).permit(:id, :user_id, :item_id, :parent_id, :content, :api_id, :username)
+      params.require(:comment).permit(:id, :user_id, :item_id, :parent_id, :content, :username)
     end
   end
