@@ -6,7 +6,7 @@ class Friendship < ApplicationRecord
   def format_act(act)
     case act.act_type
     when Act::ACT_FRIENDSHIP_CREATED
-      "#{act.actor.first_name} #{act.actor.last_name} became friends with #{self.friend.first_name} #{self.friend.last_name}"
+      "became friends with #{self.friend.first_name} #{self.friend.last_name}"
     else
       "Unknown act: #{act.act_type}"
     end
