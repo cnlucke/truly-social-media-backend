@@ -20,7 +20,7 @@ class ListsController < ApplicationController
 
           ActivityFeedChannel.broadcast_to(Act.order('id').first, {
             type: 'SET_ACTIVITY',
-            payload: Act.hash_with_bodies
+            payload: current_user.relevant_acts
             })
 
           render json: { list_type: list.list_type, item: item }

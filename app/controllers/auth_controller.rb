@@ -11,9 +11,12 @@ class AuthController < ApplicationController
       all_users = User.select { |u| u.id != user.id }
       friend_ratings = user.friend_ratings
       ratings = user.ratings
-      friend_recommended_ratings = user.friend_ratings.select { |r| r.rating >= 9 }
+
+      # only pick high ratings of user's friends
+      high_friend_ratings = friend_ratings.select { |r| r.rating >= 9}
       # currently does not persist who recommends it
-      recommended_items = friend_recommended_ratings.map { |r| Item.find(r.item_id)}
+      # convert to items
+      recommended_items = high_friend_ratings.map { |r| Item.find(r.item_id)}.uniq
       sorted_recommended_items = (recommended_items.sort_by &:rating).reverse
 
       render json: {

@@ -24,11 +24,12 @@ class UsersController < ApplicationController
     next_list = current_user.get_list_by_type("next")
     watching_list = current_user.get_list_by_type("watching")
     seen_list = current_user.get_list_by_type("seen")
-    friend_recommended_ratings = current_user.friend_ratings.select { |r| r.rating >= 9 }
-    # currently does not persist who recommends it
-    recommended_items = friend_recommended_ratings.map { |r| Item.find(r.item_id)}.uniq
-    sorted_recommended_items = (recommended_items.sort_by &:rating).reverse
     friend_ratings = current_user.friend_ratings
+    # only pick high ratings from user's friends
+    high_friend_ratings = friend_ratings.select { |r| r.rating >= 9 }
+    # convert to items
+    recommended_items = high_friend_ratings.map { |r| Item.find(r.item_id)}.uniq
+    sorted_recommended_items = (recommended_items.sort_by &:rating).reverse
     ratings = current_user.ratings
 
     render json: {
