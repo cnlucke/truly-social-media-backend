@@ -38,7 +38,7 @@ class ItemsController < ApplicationController
     friends_watching = friends_watching_list.map { |l| User.find(l.user_id).full_name }
     friends_seen = friends_seen_list.map { |l| User.find(l.user_id).full_name }
 
-    render json: { friendsNext: friends_next, friendsWatching: friends_watching, friendsSeen: friends_seen }
+    render json: { friendsNext: friends_next, friendsWatching: friends_watching, friendsSeen: friends_seen, item_id: params[:id].to_i }
   end
   private
 
