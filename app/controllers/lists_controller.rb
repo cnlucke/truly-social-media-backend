@@ -36,7 +36,9 @@ class ListsController < ApplicationController
   def order
     item_objects = list_params[:items_attributes]
     # convert to List objects so that I can update position
-    list_objects = item_objects.map { |list_item| List.find_by(user_id: current_user[:id], item_id: list_item[:id]) }
+    list_objects = item_objects.map do |list_item|
+      List.find_by(user_id: current_user[:id], item_id: list_item[:id])
+    end
     # #update position field on each item
     list_objects.each_with_index do |item, index|
       item[:position] = index
@@ -63,6 +65,6 @@ class ListsController < ApplicationController
   # params.require(:person).permit(:name, :age, pets_attributes: [:id, :name, :category])
 
   def list_params
-    params.require(:list).permit(:list_type, :item_id, items_attributes: [:api_id, :title, :date, :poster_url, :backdrop_url, :overview, :genres, :media_type, :position])
+    params.require(:list).permit(:list_type, :item_id, items_attributes: [:id, :api_id, :title, :date, :poster_url, :backdrop_url, :overview, :genres, :media_type, :position])
   end
 end

@@ -1,6 +1,6 @@
 class CommentsChannel < ApplicationCable::Channel
   def subscribed
-    item = Item.find(params[:item_id])
+    item = Item.find_by(api_id: params[:api_id])
     stream_for item
   end
 

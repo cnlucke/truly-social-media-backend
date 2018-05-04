@@ -1,8 +1,8 @@
 class List < ApplicationRecord
   belongs_to :user
   belongs_to :item
-  accepts_nested_attributes_for :item
   has_many :acts, as: :entity, dependent: :destroy
+  accepts_nested_attributes_for :item
 
   def format_act(act)
     case act.act_type
